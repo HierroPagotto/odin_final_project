@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Final Project</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+  </head>
+  <body>
+    <% if user_signed_in? %>
+      <nav style="margin-bottom: 20px;">
+        <%= link_to 'Feed', root_path %> |
+        <%= link_to 'Usuários', users_path %> |
+        <%= link_to 'Meu Perfil', user_path(current_user) %> |
+        <%= link_to 'Novo Post', new_post_path %> |
+        <%= button_to 'Sair', destroy_user_session_path, method: :delete, form: { style: 'display:inline' } %>
+      </nav>
+    <% else %>
+      <nav style="margin-bottom: 20px;">
+        <%= link_to 'Login', new_user_session_path %> |
+        <%= link_to 'Cadastrar', new_user_registration_path %>
+      </nav>
+    <% end %>
+    <%= yield %>
+  </body>
+</html>

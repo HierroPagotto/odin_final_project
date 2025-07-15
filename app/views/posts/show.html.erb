@@ -1,0 +1,28 @@
+<h1>Post</h1>
+<p><strong>Autor:</strong> <%= @post.user.name || @post.user.email %></p>
+<p><strong>Conteúdo:</strong> <%= @post.content %></p>
+<p><strong>Data:</strong> <%= @post.created_at.strftime('%d/%m/%Y %H:%M') %></p>
+
+<p><strong>Curtidas:</strong> <%= @post.likes.count %></p>
+<% if @post.likes.exists?(user: current_user) %>
+  <%= button_to 'Descurtir', post_like_path(@post, @post.likes.find_by(user: current_user)), method: :delete %>
+<% else %>
+  <%= button_to 'Curtir', post_likes_path(@post), method: :post %>
+<% end %>
+
+<h2>Comentários</h2>
+<ul>
+  <% @post.comments.each do |comment| %>
+    <li><strong><%= comment.user.name || comment.user.email %>:</strong> <%= comment.content %></li>
+  <% end %>
+</ul>
+<%= form_with(model: [@post, Comment.new], local: true) do |form| %>
+  <div>
+    <%= form.label :content, 'Novo comentário' %><br>
+    <%= form.text_area :content, rows: 2 %>
+  </div>
+  <div>
+    <%= form.submit 'Comentar' %>
+  </div>
+<% end %>
+<%= link_to 'Voltar', posts_path %>

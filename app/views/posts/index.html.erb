@@ -1,0 +1,9 @@
+<h1>Postagens</h1>
+<%= link_to 'Novo Post', new_post_path %>
+<ul>
+  <% @posts.each do |post| %>
+    <li>
+      <%= link_to(post.content.truncate(30), post_path(post)) %> - <%= post.user.name || post.user.email %> (<%= post.created_at.strftime('%d/%m/%Y') %>)
+    </li>
+  <% end %>
+</ul>
