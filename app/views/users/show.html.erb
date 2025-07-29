@@ -1,15 +1,18 @@
-<h1>Perfil de <%= @user.name || @user.email %></h1>
-<img src="<%= @user.profile_image_url %>" alt="Foto de perfil" width="100" height="100">
-<p>Email: <%= @user.email %></p>
-<% if @user.name.present? %>
-  <p>Nome: <%= @user.name %></p>
-<% end %>
-
-<h2>Postagens</h2>
-<ul>
+<h1 class="mb-4 text-primary">Perfil de <%= @user.name || @user.email %></h1>
+<div class="card mb-4 shadow border-info" style="max-width: 400px;">
+  <div class="card-body text-center">
+    <img src="<%= @user.profile_image_url %>" alt="Foto de perfil" class="rounded-circle mb-3 border border-3 border-info" width="100" height="100">
+    <p class="mb-1"><span class="badge bg-info text-dark">Email</span> <%= @user.email %></p>
+    <% if @user.name.present? %>
+      <p class="mb-1"><span class="badge bg-secondary">Nome</span> <%= @user.name %></p>
+    <% end %>
+  </div>
+</div>
+<h2 class="mb-3 text-secondary">Postagens</h2>
+<ul class="list-group">
   <% @user.posts.order(created_at: :desc).each do |post| %>
-    <li>
-      <%= link_to(post.content.truncate(30), post_path(post)) %> (<%= post.created_at.strftime('%d/%m/%Y') %>)
+    <li class="list-group-item">
+      <%= link_to(post.content.truncate(30), post_path(post), class: 'fw-bold text-decoration-none text-dark') %> <span class="badge bg-light text-dark ms-2"><%= post.created_at.strftime('%d/%m/%Y') %></span>
     </li>
   <% end %>
 </ul>
