@@ -1,9 +1,33 @@
-<h1>Postagens</h1>
-<%= link_to 'Novo Post', new_post_path %>
-<ul>
-  <% @posts.each do |post| %>
-    <li>
-      <%= link_to(post.content.truncate(30), post_path(post)) %> - <%= post.user.name || post.user.email %> (<%= post.created_at.strftime('%d/%m/%Y') %>)
-    </li>
-  <% end %>
-</ul>
+<div class="row justify-content-center">
+  <div class="col-12 col-md-8 col-lg-6">
+    <h1 class="mb-4 text-primary fw-bold text-center">Feed de Postagens</h1>
+    <div class="d-flex justify-content-end mb-3">
+      <%= link_to 'Novo Post', new_post_path, class: 'btn btn-success btn-lg' %>
+    </div>
+    <% @posts.each do |post| %>
+      <div class="card mb-4 shadow border-0">
+        <div class="card-body">
+          <div class="d-flex align-items-center mb-2">
+            <div class="rounded-circle bg-secondary d-flex justify-content-center align-items-center me-3" style="width:48px; height:48px;">
+              <span class="text-white fw-bold fs-4"><%= (post.user.name || post.user.email)[0].upcase %></span>
+            </div>
+            <div>
+              <span class="fw-bold"><%= post.user.name || post.user.email %></span><br>
+              <span class="text-muted small"><%= post.created_at.strftime('%d/%m/%Y %H:%M') %></span>
+            </div>
+          </div>
+          <p class="fs-5 mb-3"><%= post.content %></p>
+          <div class="d-flex align-items-center">
+            <span class="badge bg-success me-2">Curtidas: <%= post.likes.count %></span>
+            <% if post.likes.exists?(user: current_user) %>
+              <%= button_to 'Descurtir', post_like_path(post, post.likes.find_by(user: current_user)), method: :delete, class: 'btn btn-outline-danger btn-sm me-2' %>
+            <% else %>
+              <%= button_to 'Curtir', post_likes_path(post), method: :post, class: 'btn btn-outline-success btn-sm me-2' %>
+            <% end %>
+            <%= link_to 'Ver', post_path(post), class: 'btn btn-primary btn-sm' %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
